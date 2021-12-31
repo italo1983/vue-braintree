@@ -10,6 +10,8 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var dropIn = _interopDefault(require('braintree-web-drop-in'));
 
 function _typeof(obj) {
+  "@babel/helpers - typeof";
+
   if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
     _typeof = function (obj) {
       return typeof obj;
@@ -122,7 +124,20 @@ var script = {
 
       _this.instance = instance; // Load event
 
-      _this.$emit("load", _this.instance);
+      _this.$emit("load", _this.instance); // hook up events
+
+
+      _this.instance.on('paymentMethodRequestable', function (event) {
+        _this.$emit('paymentMethodRequestable', event);
+      });
+
+      _this.instance.on('noPaymentMethodRequestable', function (event) {
+        _this.$emit('noPaymentMethodRequestable', event);
+      });
+
+      _this.instance.on('paymentOptionSelected', function (event) {
+        _this.$emit('paymentOptionSelected', event);
+      });
     });
   },
   methods: {
@@ -139,6 +154,7 @@ var script = {
         requestPaymentConfig.threeDSecure = this.threeDSecureParameters;
       }
 
+      this.$emit('submit');
       this.instance.requestPaymentMethod(requestPaymentConfig, function (err, payload) {
         if (err) {
           // No payment method is available.
@@ -243,7 +259,7 @@ var normalizeComponent_1 = normalizeComponent;
 const __vue_script__ = script;
 
 /* template */
-var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"payment"},[_c('div',{ref:"dropin"}),_vm._v(" "),_vm._t("button",[_c('button',{class:_vm.btnClass,on:{"click":_vm.submit}},[_vm._v(_vm._s(_vm.btnText))])],{"submit":_vm.submit})],2)};
+var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"payment"},[_c('div',{ref:"dropin"}),_vm._v(" "),_vm._t("button",function(){return [_c('button',{class:_vm.btnClass,on:{"click":_vm.submit}},[_vm._v(_vm._s(_vm.btnText))])]},{"submit":_vm.submit})],2)};
 var __vue_staticRenderFns__ = [];
 
   /* style */

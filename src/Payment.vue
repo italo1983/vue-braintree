@@ -104,10 +104,21 @@ export default {
       this.instance = instance;
       // Load event
       this.$emit("load", this.instance);
+      // hook up events
+      this.instance.on('paymentMethodRequestable', (event) => {
+        this.$emit('paymentMethodRequestable', event)
+      })
+      this.instance.on('noPaymentMethodRequestable', (event) => {
+        this.$emit('noPaymentMethodRequestable', event)
+      })
+      this.instance.on('paymentOptionSelected', (event) => {
+        this.$emit('paymentOptionSelected', event)
+      })
     });
   },
   methods: {
     submit (event) {
+      this.$emit('submit')
       if (event) {
         event.preventDefault();
       }
